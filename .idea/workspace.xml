@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="17612b3f-ec2f-4b31-9d2b-8ea0c674abb6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/CS Internal Assessment.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Algorithms/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Algorithms/allocation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Algorithms/settlement.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OCR/OCR_text_extraction.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OCR/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primary/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primary/acc_balance.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primary/expense.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primary/member.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primary/money.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primary/project.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primary/proof.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Primary/transfer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/database.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/repository.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/schema.sql.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="3HCCdBMCMgZfYUfVCrvPio1TV9p" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "master",
+    "junie.onboarding.icon.badge.shown": "true",
+    "to.speed.mode.migration.done": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\gabri\Downloads\CS Internal Assessment" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-f2b7a9f6281b-6e1f45a539f7-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.29346.142" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="17612b3f-ec2f-4b31-9d2b-8ea0c674abb6" name="Changes" comment="" />
+      <created>1785362748561</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1785362748561</updated>
+    </task>
+    <servers />
+  </component>
+</project>
