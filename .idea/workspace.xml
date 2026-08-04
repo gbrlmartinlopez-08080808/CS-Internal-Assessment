@@ -4,31 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17612b3f-ec2f-4b31-9d2b-8ea0c674abb6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/CS Internal Assessment.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Algorithms/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Algorithms/allocation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Algorithms/settlement.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OCR/OCR_text_extraction.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OCR/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Primary/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Primary/acc_balance.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Primary/expense.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Primary/member.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Primary/money.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Primary/project.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Primary/proof.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Primary/transfer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/database.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/schema.sql.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-    </list>
+    <list default="true" id="17612b3f-ec2f-4b31-9d2b-8ea0c674abb6" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
