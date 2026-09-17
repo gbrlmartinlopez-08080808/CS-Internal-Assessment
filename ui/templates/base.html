@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Shared Expense Settlement{% endblock %}</title>
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --panel: #161616;
+    --line: #3a3a3a;
+    --text: #e8e8e8;
+    --dim: #888888;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 10px 14px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-monospace, "Cascadia Mono", "Consolas", "DejaVu Sans Mono", monospace;
+    font-size: 12px;
+    line-height: 1.35;
+  }
+  main { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 13px; letter-spacing: 1.5px; margin: 0; }
+  .rule { color: var(--dim); margin-bottom: 8px; }
+  section {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    padding: 6px 12px;
+    margin-bottom: 6px;
+  }
+  h2 { font-size: 12px; font-weight: bold; color: var(--text); margin: 0 0 6px; }
+  label { color: var(--dim); margin-right: 4px; }
+  input, select, button, a.btn {
+    font-family: inherit;
+    font-size: 11px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--line);
+    padding: 3px 6px;
+    margin: 2px 4px 2px 0;
+    display: inline-block;
+    text-decoration: none;
+  }
+  button, a.btn { cursor: pointer; }
+  button:hover, a.btn:hover { border-color: var(--text); }
+  table { border-collapse: collapse; width: 100%; }
+  td { padding: 1px 8px 1px 0; }
+  td.amount { text-align: right; width: 100px; }
+  .credit { font-weight: bold; }
+  .debit { font-style: italic; }
+  .dim { color: var(--dim); }
+  .message { border: 1px solid var(--text); padding: 5px 10px; margin-bottom: 6px; }
+  .empty { color: var(--dim); font-style: italic; }
+</style>
+</head>
+<body>
+<main>
+{% block content %}{% endblock %}
+</main>
+</body>
+</html>
