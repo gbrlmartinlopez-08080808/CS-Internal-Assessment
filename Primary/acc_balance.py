@@ -49,7 +49,7 @@ class Acc_balance:
 
     def check_net_balance(self, balances: dict[Member, Money]):
         net_cents = 0
-        for amount in balances.items():
+        for amount in balances.values():
             net_cents += amount.cents
 
         if net_cents != 0:

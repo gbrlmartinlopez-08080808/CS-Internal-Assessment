@@ -4,7 +4,7 @@ from Primary.expense import Expense
 
 class Project:
 
-    def __init__(self, name: str, status: str = open):
+    def __init__(self, name: str, status: str = "open"):
         self.name = name
         self.status = status
         self.members = []
@@ -16,8 +16,8 @@ class Project:
             for existing in self.members:
                 if existing.id == new_member.id:
                     print("User has already been added")
-                else:
-                    self.members.append(new_member)
+                self.members.append(new_member)
+
         else:
             print("The project has been settled, and does not allow new members")
 

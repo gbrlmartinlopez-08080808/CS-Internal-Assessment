@@ -25,11 +25,13 @@ def sort_parallel_settle(debtors: dict[Member, Money], creditors: dict[Member, M
         for j in range(0, len(abs_val_d_cents) - i - 1):
             if abs_val_d_cents[j] < abs_val_d_cents[j+1]:
                 abs_val_d_cents[j], abs_val_d_cents[j + 1] = abs_val_d_cents[j + 1], abs_val_d_cents[j]
+                d_members[j], d_members[j+1] = d_members[j+1], d_members[j]
 
     for i in range(len(c_cents)):
         for j in range(0, len(c_cents) - i - 1):
             if c_cents[j] < c_cents[j + 1]:
                 c_cents[j], c_cents[j + 1] = c_cents[j + 1], c_cents[j]
+                d_members[j], d_members[j+1] = d_members[j+1], d_members[j]
 
     d_cents = abs_val_d_cents
     return (d_members, d_cents, c_members, c_cents)
@@ -48,7 +50,7 @@ def balance_settle(debtors: dict[Member, Money], creditors: dict[Member, Money])
         if max_debt_cents < max_credit_cents:
             settle_cents = max_debt_cents
         else:
-            settle_cents = max_debt_cents
+            settle_cents = max_credit_cents
 
         t = Transfer (
             from_member = max_debtor,
@@ -61,12 +63,12 @@ def balance_settle(debtors: dict[Member, Money], creditors: dict[Member, Money])
         c_cents[0] = c_cents[0] - settle_cents
 
         if d_cents[0] == 0:
-            d_members.remove(0)
-            d_cents.remove(0)
+            d_members.pop(0)
+            d_cents.pop(0)
 
         if c_cents[0] == 0:
-            c_members.remove(0)
-            c_cents.remove(0)
+            c_members.pop(0)
+            c_cents.pop(0)
 
     return (transfers)
 
@@ -80,7 +82,7 @@ def optimal_settle(debtors: dict[Member, Money], creditors: dict[Member, Money])
         target_cents = d_cents[i]
 
         low = 0
-        high = len(c_cents)
+        high = len(c_cents)-1
         match = False
         match_idx = -1
 
