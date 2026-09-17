@@ -5,38 +5,49 @@ class Money:
 
     @classmethod
     def from_display(cls, amount):
-        clean_amount = amount.strip().strip("€")
+        clean_amount = amount.strip().strip("€").strip()
+
+        negative = False
+        if clean_amount.startswith("-"):
+            negative = True
+            clean_amount = clean_amount[1:].strip()
 
         if "." in clean_amount:
-            euros, cents = amount.split(".", 1)
+            euros, cents = clean_amount.split(".", 1)
             if len(cents) == 0:
                 cents = "00"
             elif len(cents) == 1:
                 cents = cents + "0"
             else:
                 cents = cents[0:2]
-            euros = int(euros) * 100
-            cents = int(cents)
-            total_cents = int(euros) + int(cents)
+            total_cents = int(euros) * 100 + int(cents)
 
         else:
-            clean_amount = int(clean_amount)
-            total_cents = clean_amount * 100
+            total_cents = int(clean_amount) * 100
+
+        if negative:
+            total_cents = -total_cents
 
         return cls(total_cents)
 
 
     def to_display(self):
-        euro = self.cents // 100
-        cents = self.cents % 100
-        amount = f"{euro}.{cents}€"
+        if self.cents < 0:
+            sign = "-"
+            abs_cents = -self.cents
+        else:
+            sign = ""
+            abs_cents = self.cents
+
+        euro = abs_cents // 100
+        cents = abs_cents % 100
+        amount = f"{sign}{euro}.{cents:02d}€"
 
         return (amount)
 
 
     def add(self, other):
-        self.cents = self.cents + other.cents
-        return Money(self.cents)
+        return Money(self.cents + other.cents)
 
     def __add__(self, other):
         return (self.add(other))

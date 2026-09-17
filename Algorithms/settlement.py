@@ -31,7 +31,7 @@ def sort_parallel_settle(debtors: dict[Member, Money], creditors: dict[Member, M
         for j in range(0, len(c_cents) - i - 1):
             if c_cents[j] < c_cents[j + 1]:
                 c_cents[j], c_cents[j + 1] = c_cents[j + 1], c_cents[j]
-                d_members[j], d_members[j+1] = d_members[j+1], d_members[j]
+                c_members[j], c_members[j+1] = c_members[j+1], c_members[j]
 
     d_cents = abs_val_d_cents
     return (d_members, d_cents, c_members, c_cents)
@@ -106,10 +106,10 @@ def optimal_settle(debtors: dict[Member, Money], creditors: dict[Member, Money])
             )
             transfers.append(t)
 
-            d_members.remove(i)
-            d_cents.remove(i)
-            c_members.remove(match_idx)
-            c_cents.remove(match_idx)
+            d_members.pop(i)
+            d_cents.pop(i)
+            c_members.pop(match_idx)
+            c_cents.pop(match_idx)
 
         else:
             i += 1

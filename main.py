@@ -1,6 +1,4 @@
-from Primary.money import Money
+from ui.server import app
 
-m1 = Money.from_display("12.87€")
-m2 = Money.from_display("12€")
-
-m1.add(8.2)
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=5000, debug=True)
