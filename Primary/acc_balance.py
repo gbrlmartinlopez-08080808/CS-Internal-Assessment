@@ -52,3 +52,6 @@ class Acc_balance:
         net_cents = 0
         for amount in balances.values():
             net_cents += amount.cents
+
+        if net_cents != 0:
+            raise ValueError(f"Zero-sum broken: balances add up to {net_cents} cents")

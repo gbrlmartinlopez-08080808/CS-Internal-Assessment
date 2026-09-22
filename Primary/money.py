@@ -9,11 +9,10 @@ class Money:
     def from_display(cls, amount):
         clean_amount = amount.strip().strip("€").strip()
 
-        negative = False
-        if clean_amount[0] == "-" or clean_amount == "":
-            negative = True
+        if clean_amount == "":
             raise ValueError("No amount was entered")
-            clean_amount = clean_amount[1:].strip()
+        if clean_amount[0] == "-":
+            raise ValueError("An amount cannot be negative")
 
         if "." in clean_amount:
             euros, cents = clean_amount.split(".", 1)
@@ -27,9 +26,6 @@ class Money:
 
         else:
             total_cents = int(clean_amount) * 100
-
-        if negative:
-            total_cents = -total_cents
 
         return cls(total_cents)
 
@@ -57,13 +53,12 @@ class Money:
 
 
     def even_split(self, n):
-        share = self.cents // n
-        remainder = self.cents % n
-
         share_list = []
         if n <= 0:
             raise ValueError("Money cannot be split between zero people")
         else:
+            share = self.cents // n
+            remainder = self.cents % n
             for i in range(n):
                 if i < remainder:
                     share_cents = share + 1

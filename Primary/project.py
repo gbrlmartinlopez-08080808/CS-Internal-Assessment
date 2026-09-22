@@ -4,7 +4,7 @@ from Primary.expense import Expense
 
 class Project:
 
-    def __init__(self, id: str, members, expenses, name: str, member_seq: int, expense_seq: int, status: str = "open"):
+    def __init__(self, id: str, name: str, status: str = "open"):
         self.id = id
         self.name = name
         self.status = status

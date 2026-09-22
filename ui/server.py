@@ -6,10 +6,8 @@ from Primary.expense import Expense
 from Primary.project import Project
 from Primary.acc_balance import Acc_balance
 from Algorithms.settlement import balance_settle, optimal_settle
-
+current_project = Project("p1", "Untitled Project")
 app = Flask(__name__)
-
-current_project = Project("Untitled Project")
 last_message = ""
 member_count = 0
 expense_count = 0
@@ -86,9 +84,11 @@ def add_member():
             last_message = f"{name} is already a member"
             return redirect(url_for("index"))
 
-    member_count += 1
-    current_project.add_member(Member(f"m{member_count}", name))
-    last_message = f"Added member {name}"
+    try:
+        current_project.add_member(name)
+        last_message = f"Added member {name}"
+    except ValueError as error:
+        last_message = str(error)
 
     return redirect(url_for("index"))
 
@@ -116,11 +116,11 @@ def add_expense():
         last_message = "Amount must be greater than zero"
         return redirect(url_for("index"))
 
-    expense_count += 1
-    current_project.add_expense(
-        Expense(f"e{expense_count}", amount, payer, date, description)
-    )
-    last_message = f"Added {amount.to_display()} paid by {payer.name}"
+    try:
+        current_project.add_expense(amount, payer, date, description)
+        last_message = f"Added {amount.to_display()} paid by {payer.name}"
+    except ValueError as error:
+        last_message = str(error)
 
     return redirect(url_for("index"))
 
@@ -129,7 +129,7 @@ def add_expense():
 def reset_project():
     global current_project, last_message, member_count, expense_count
 
-    current_project = Project("Untitled Project")
+    current_project = Project("p1", "Untitled Project")
     member_count = 0
     expense_count = 0
     last_message = "Project reset"
