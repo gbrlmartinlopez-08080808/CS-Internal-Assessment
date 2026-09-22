@@ -25,6 +25,14 @@ def find_member_by_id(member_id):
 @app.route("/")
 def index():
     global last_message
+    message = last_message
+    last_message = ""
+    return render_template("project.html", project=current_project, message=message)
+
+
+@app.route("/dashboard")
+def dashboard():
+    global last_message
 
     ledger = Acc_balance(current_project)
     balances = ledger.compute_balances()
@@ -40,7 +48,7 @@ def index():
     last_message = ""
 
     return render_template(
-        "project.html",
+        "dashboard.html",
         project=current_project,
         balances=balances,
         net_cents=net_cents,

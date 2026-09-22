@@ -4,3 +4,7 @@ class Member:
         self.id = id
         self.name = name
         self.weight = weight
+        if name.strip() == "":
+            raise ValueError("A member needs a name")
+
+

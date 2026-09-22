@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17612b3f-ec2f-4b31-9d2b-8ea0c674abb6" name="Changes" comment="Template addition">
-      <change afterPath="$PROJECT_DIR$/ui/templates/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Primary/acc_balance.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/acc_balance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Primary/expense.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/expense.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Primary/member.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/member.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Primary/money.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/money.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Primary/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/project.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Primary/proof.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/proof.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/ui/server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,18 +30,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "gbrlmartinlopez-08080808"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;gbrlmartinlopez-08080808&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/gbrlmartinlopez-08080808/CS-Internal-Assessment.git",
-    "accountId": "efcd4750-09f9-4c42-a9e6-e8526df7e06e"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/gbrlmartinlopez-08080808/CS-Internal-Assessment.git&quot;,
+    &quot;accountId&quot;: &quot;efcd4750-09f9-4c42-a9e6-e8526df7e06e&quot;
   }
-}]]></component>
+}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -58,6 +65,7 @@
     "DefaultHtmlFileTemplate": "HTML File",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.main.executor": "Run",
+    "Python.server.executor": "Run",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",

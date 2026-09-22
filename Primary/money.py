@@ -2,14 +2,17 @@ class Money:
 
     def __init__(self, cents: int):
         self.cents = cents
+        if type(cents) != int:
+            raise ValueError(f"Money must be built from whole cents")
 
     @classmethod
     def from_display(cls, amount):
         clean_amount = amount.strip().strip("€").strip()
 
         negative = False
-        if clean_amount.startswith("-"):
+        if clean_amount[0] == "-" or clean_amount == "":
             negative = True
+            raise ValueError("No amount was entered")
             clean_amount = clean_amount[1:].strip()
 
         if "." in clean_amount:
@@ -58,15 +61,18 @@ class Money:
         remainder = self.cents % n
 
         share_list = []
-        for i in range(n):
-            if i < remainder:
-                share_cents = share + 1
-                share_list.append(Money(share_cents))
-            else:
-                share_cents = share
-                share_list.append(Money(share_cents))
+        if n <= 0:
+            raise ValueError("Money cannot be split between zero people")
+        else:
+            for i in range(n):
+                if i < remainder:
+                    share_cents = share + 1
+                    share_list.append(Money(share_cents))
+                else:
+                    share_cents = share
+                    share_list.append(Money(share_cents))
 
-        return (share_list)
+            return (share_list)
 
 
 

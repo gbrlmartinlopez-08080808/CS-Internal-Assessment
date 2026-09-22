@@ -4,38 +4,49 @@ from Primary.expense import Expense
 
 class Project:
 
-    def __init__(self, name: str, status: str = "open"):
+    def __init__(self, id: str, members, expenses, name: str, member_seq: int, expense_seq: int, status: str = "open"):
+        self.id = id
         self.name = name
         self.status = status
         self.members = []
         self.expenses = []
+        self.member_seq = 0
+        self.expense_seq = 0
 
-
-    def add_member(self, new_member: Member):
+    def add_member(self, name: str):
         if self.status == "settled":
-            print("The project has been settled, and does not allow new members")
-            return
+            raise ValueError("Member cannot be added, project is closed")
 
         for existing in self.members:
-            if existing.id == new_member.id:
-                print("User has already been added")
-                return
+            if existing.name.lower() == name.strip().lower():
+                raise ValueError(f"{name} is already a member")
 
-        self.members.append(new_member)
+        self.member_seq += 1
+        member = Member(f"m{self.member_seq}", name, 1.0)
+        self.members.append(member)
+        return member
 
+    def add_expense(self, amount: Money, payer: Member, date: str, description: str, proof=None, participants=None):
+        if self.status == "settled" or payer not in self.members:
+            raise ValueError("The payment cannot be registered due to project closed, or payer unidentified")
+        if participants is not None:
+            for person in participants:
+                if person not in self.members:
+                    raise ValueError(f"{person.name} is not a member of this project")
 
-    def add_expense(self, expense: Expense):
-        if self.status == "settled":
-            print("The project has been settled, and does not allow new expenses")
-            return
+        self.expense_seq += 1
+        expense = Expense(f"e{self.expense_seq}", amount, payer, date, description, proof, participants)
+        self.expenses.append(expense)
+        return expense
 
-        for member in self.members:
-            if expense.payer.id == member.id:
-                self.expenses.append(expense)
-                return
-
-        print("The payer is not a member of this project, so the expense was not added")
-
+    def restore_member(self, member):
+        for existing in self.members:
+            if existing.id == member.id:
+                raise ValueError(f"Duplicate member id: {member.id}")
+        self.members.append(member)
+        number = int(member.id[1:])
+        if number > self.member_seq:
+            self.member_seq = number
 
     def total_spent(self):
         total_cents = 0
@@ -43,6 +54,9 @@ class Project:
             total_cents += expense.amount.cents
         return Money(total_cents)
 
-
     def close(self):
-        self.status = "settled"
+        if self.status == "settled" or len(self.expenses) == 0:
+            raise ValueError("The project is already settled, or is currently empty")
+        else:
+            self.status = "settled"
+

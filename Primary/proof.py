@@ -11,3 +11,4 @@ class Proof:
         self.extr_date = extr_date
         self.extr_payer = extr_payer
         self.status = status
+

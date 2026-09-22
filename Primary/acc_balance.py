@@ -6,9 +6,10 @@ class Acc_balance:
 
     def __init__(self, project: Project):
         self.project = project
-
+        self.cached_balances = None
 
     def compute_balances(self):
+
         raw_balances = {}
         for member in self.project.members:
             raw_balances[member] = 0
@@ -25,7 +26,7 @@ class Acc_balance:
             balances[member] = Money(cents)
         self.check_net_balance(balances)
 
-        return(balances)
+        return (balances)
 
 
     def debtors(self):
@@ -51,6 +52,3 @@ class Acc_balance:
         net_cents = 0
         for amount in balances.values():
             net_cents += amount.cents
-
-        if net_cents != 0:
-            print(f"The net balance does not account for 0, but rather {net_cents}")
