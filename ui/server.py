@@ -5,7 +5,7 @@ from Primary.member import Member
 from Primary.expense import Expense
 from Primary.project import Project
 from Primary.acc_balance import Acc_balance
-from Algorithms.settlement import balance_settle, optimal_settle
+from Algorithms.settlement import balance_settle, pair_first_settle
 current_project = Project("p1", "Untitled Project")
 app = Flask(__name__)
 last_message = ""
@@ -40,7 +40,7 @@ def dashboard():
         net_cents += amount.cents
 
     greedy_transfers = balance_settle(ledger.debtors(), ledger.creditors())
-    optimal_transfers = optimal_settle(ledger.debtors(), ledger.creditors())
+    optimal_transfers = pair_first_settle(ledger.debtors(), ledger.creditors())
 
     message = last_message
     last_message = ""

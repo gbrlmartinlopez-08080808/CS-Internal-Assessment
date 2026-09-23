@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17612b3f-ec2f-4b31-9d2b-8ea0c674abb6" name="Changes" comment="Settlement correction">
+    <list default="true" id="17612b3f-ec2f-4b31-9d2b-8ea0c674abb6" name="Changes" comment="OCR implementation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithms/settlement.py" beforeDir="false" afterPath="$PROJECT_DIR$/Algorithms/settlement.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OCR/OCR_text_extraction.py" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/OCR_text_extraction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/ui/server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,7 +190,15 @@
       <option name="project" value="LOCAL" />
       <updated>1790145533708</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="OCR implementation">
+      <option name="closed" value="true" />
+      <created>1790152109373</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1790152109373</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -209,6 +219,7 @@
     <MESSAGE value="Final (secondary) corrections of the Primary file." />
     <MESSAGE value="Allocation correction" />
     <MESSAGE value="Settlement correction" />
-    <option name="LAST_COMMIT_MESSAGE" value="Settlement correction" />
+    <MESSAGE value="OCR implementation" />
+    <option name="LAST_COMMIT_MESSAGE" value="OCR implementation" />
   </component>
 </project>

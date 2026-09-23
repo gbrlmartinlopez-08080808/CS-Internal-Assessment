@@ -65,7 +65,7 @@ def parse_receipt_text(raw_text: str):
         upper = line.upper()
         if "TOTAL" in upper and "SUBTOTAL" not in upper:
             for text in re.findall(amount_pattern, line):
-                amount = Money.from_display(text.replce(",", "."))
+                amount = Money.from_display(text.replace(",", "."))
                 if amount.cents > 0:
                     if total is None or amount.cents > total.cents:
                         total = amount
