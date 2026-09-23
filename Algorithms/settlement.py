@@ -1,6 +1,7 @@
 from Primary.member import Member
 from Primary.money import Money
 from Primary.transfer import Transfer
+from itertools import permutations
 
 def sort_parallel_settle(debtors: dict[Member, Money], creditors: dict[Member, Money]):
 
@@ -36,6 +37,13 @@ def sort_parallel_settle(debtors: dict[Member, Money], creditors: dict[Member, M
     d_cents = abs_val_d_cents
     return (d_members, d_cents, c_members, c_cents)
 
+def restore_order(cents, members):
+    k = 0
+    while k + 1 < len(cents) and cents[k] < cents[k+1]:
+        cents[k], cents[k+1] = cents[k+1], cents[k]
+        members[k],members[k+1] = members[k+1], members[k]
+        k += 1
+
 def balance_settle(debtors: dict[Member, Money], creditors: dict[Member, Money]):
     d_members, d_cents, c_members, c_cents = sort_parallel_settle(debtors, creditors)
     transfers = []
@@ -66,6 +74,9 @@ def balance_settle(debtors: dict[Member, Money], creditors: dict[Member, Money])
             d_members.pop(0)
             d_cents.pop(0)
 
+        restore_order(d_cents, d_members)
+        restore_order(d_cents, d_members)
+
         if c_cents[0] == 0:
             c_members.pop(0)
             c_cents.pop(0)
@@ -73,7 +84,7 @@ def balance_settle(debtors: dict[Member, Money], creditors: dict[Member, Money])
     return (transfers)
 
 
-def optimal_settle(debtors: dict[Member, Money], creditors: dict[Member, Money]):
+def pair_first_settle(debtors: dict[Member, Money], creditors: dict[Member, Money]):
     d_members, d_cents, c_members, c_cents = sort_parallel_settle(debtors, creditors)
     transfers = []
 
@@ -127,5 +138,62 @@ def optimal_settle(debtors: dict[Member, Money], creditors: dict[Member, Money])
         transfers.append(t)
 
     return (transfers)
+
+def match_in_order(d_members, d_cents, c_members, c_cents):
+    d_left = list(d_cents)
+    c_left = list(c_cents)
+    transfers = []
+    i = 0
+    j = 0
+
+    while i < len(d_left) and j < len(c_left):
+        if d_left[i] < c_left[j]:
+            amount = d_left[i]
+        else:
+            amount = c_left[j]
+
+        t = Transfer (
+            from_member = d_members[i],
+            to_member = c_members[i],
+            amount = Money(amount)
+        )
+        transfers.append(t)
+
+        d_left[i] = d_left[i] - amount
+        c_left[j] = c_left[j] - amount
+
+        if d_left[i] == 0:
+            i += 1
+        if c_left[j] == 0:
+            j += 1
+
+        return (transfers)
+
+def brute_force_settle(debtors: dict[Member, Money], creditors: dict[Member, Money]):
+    d_members, d_cents, c_members, c_cents = sort_parallel_settle(debtors, creditors)
+    best = None
+
+    for d_order in permutations(range(len(d_members))):
+        try_d_members = []
+        try_d_cents = []
+        for k in d_order:
+            try_d_members.append(d_members[k])
+            try_d_cents.append(d_cents[k])
+
+        for c_order in permutations(range(len(c_members))):
+            try_d_members = []
+            try_d_cents = []
+        for k in d_order:
+            try_d_members.append(d_members[k])
+            try_d_cents.append(d_cents[k])
+
+        attempt = match_in_order(try_d_members, try_d_cents, try_d_members, try_d_cents)
+        if best is None or len(attempt) < len(best):
+            best = attempt
+
+    return (best)
+
+
+
 
 
