@@ -1,111 +1,176 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block title %}{{ project.name }}{% endblock %}
+
+{% block header %}
 <h1>{{ project.name }}</h1>
-<div class="rule">=================================</div>
-
-{% if message %}<div class="message">{{ message }}</div>{% endif %}
-
-<section>
-  <h2>[1] ADD MEMBER</h2>
-  <form method="post" action="{{ url_for('add_member') }}">
-    <label for="member_name">name</label>
-    <input id="member_name" name="name" size="18" autocomplete="off">
-    <button type="submit">Add</button>
+<p class="summary">
+  <span>Members: {{ project.members|length }}</span>
+  <span>Purchases: {{ project.expenses|length }}</span>
+  <span>Total: {{ project.total_spent().to_display() }}</span>
+  <span class="status {{ project.status }}">{{ project.status|capitalize }}</span>
+</p>
+<div class="actions">
+  {% if project.status == 'open' %}
+  <form method="post" action="{{ url_for('close_project', project_id=project.id) }}"
+        onsubmit="return confirm('Close this project? It can no longer be changed.')">
+    <button type="submit"><i data-lucide="lock"></i> Close project</button>
   </form>
-  {% if project.members %}
-    <span class="dim">members:</span>
-    {% for member in project.members %}{{ member.name }}{% if not loop.last %}, {% endif %}{% endfor %}
-  {% else %}
-    <div class="empty">no members yet</div>
   {% endif %}
-</section>
-
-<section>
-  <h2>[2] ADD EXPENSE</h2>
-  <form method="post" action="{{ url_for('add_expense') }}">
-    <label for="amount">amount</label>
-    <input id="amount" name="amount" size="8" placeholder="12.87" autocomplete="off">
-    <label for="payer_id">payer</label>
-    <select id="payer_id" name="payer_id">
-      {% for member in project.members %}
-        <option value="{{ member.id }}">{{ member.name }}</option>
-      {% endfor %}
-    </select>
-    <label for="date">date</label>
-    <input id="date" name="date" size="10" placeholder="2026-04-02" autocomplete="off">
-    <label for="description">desc</label>
-    <input id="description" name="description" size="14" autocomplete="off">
-    <button type="submit">Add</button>
-  </form>
-  {% if project.expenses %}
-    <table>
-      {% for expense in project.expenses %}
-        <tr>
-          <td class="amount">{{ expense.amount.to_display() }}</td>
-          <td>{{ expense.payer.name }}</td>
-          <td class="dim">{{ expense.date }}</td>
-          <td class="dim">{{ expense.description }}</td>
-        </tr>
-      {% endfor %}
-    </table>
-    <span class="dim">total spent: {{ project.total_spent().to_display() }}</span>
-  {% else %}
-    <div class="empty">no expenses yet</div>
-  {% endif %}
-</section>
-
-<section>
-  <h2>[3] BALANCES</h2>
-  {% if balances %}
-    <table>
-      {% for member, amount in balances.items() %}
-        <tr>
-          <td>{{ member.name }}</td>
-          <td class="amount {% if amount.cents < 0 %}debit{% else %}credit{% endif %}">
-            {{ amount.to_display() }}
-          </td>
-        </tr>
-      {% endfor %}
-    </table>
-    <span class="dim">net: {{ net_cents }}</span>
-    {% if net_cents != 0 %}<span class="debit">ZERO-SUM INVARIANT BROKEN</span>{% endif %}
-  {% else %}
-    <div class="empty">nothing to balance yet</div>
-  {% endif %}
-</section>
-
-<section>
-  <h2>[4] SETTLEMENT</h2>
-  <div class="dim">greedy ({{ greedy_transfers|length }} transfers)</div>
-  {% for transfer in greedy_transfers %}
-    <table>
-      <tr>
-        <td>{{ transfer.from_member.name }} -&gt; {{ transfer.to_member.name }}</td>
-        <td class="amount">{{ transfer.amount.to_display() }}</td>
-      </tr>
-    </table>
-  {% else %}
-    <div class="empty">everyone is settled</div>
-  {% endfor %}
-
-  <div class="dim" style="margin-top:6px">optimal ({{ optimal_transfers|length }} transfers)</div>
-  {% for transfer in optimal_transfers %}
-    <table>
-      <tr>
-        <td>{{ transfer.from_member.name }} -&gt; {{ transfer.to_member.name }}</td>
-        <td class="amount">{{ transfer.amount.to_display() }}</td>
-      </tr>
-    </table>
-  {% else %}
-    <div class="empty">everyone is settled</div>
-  {% endfor %}
-</section>
-
-<div style="margin-top:6px">
-  <a class="btn" href="{{ url_for('index') }}">&lt;- Back to project</a>
-  <form method="post" action="{{ url_for('reset_project') }}" style="display:inline">
-    <button type="submit">Reset project</button>
-  </form>
+  <a href="{{ url_for('index') }}"><i data-lucide="arrow-left"></i> All projects</a>
 </div>
+{% endblock %}
+
+{% block form %}
+{% if project.status == 'settled' %}
+<p class="empty">This project is settled, so it can no longer be changed. Its purchases, balances and transfers are still shown on the right.</p>
+{% else %}
+  <div class="group">
+    <h2>Add a member</h2>
+    <form method="post" action="{{ url_for('add_member', project_id=project.id) }}">
+      <div class="fields inline">
+        <label for="member_name">Name</label>
+        <input id="member_name" name="name" autocomplete="off">
+        <button type="submit">Add member</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="group">
+    <h2>Add a purchase</h2>
+    <form method="post" action="{{ url_for('add_purchase', project_id=project.id) }}" enctype="multipart/form-data">
+      <div class="fields">
+        <label for="amount">Amount</label>
+        <input id="amount" name="amount" inputmode="decimal" placeholder="12.50" autocomplete="off">
+        <label for="payer_id">Paid by</label>
+        <select id="payer_id" name="payer_id">
+          {% for member in project.members %}
+            <option value="{{ member.id }}">{{ member.name }}</option>
+          {% else %}
+            <option value="">Add a member first</option>
+          {% endfor %}
+        </select>
+        <label for="date">Date</label>
+        <input id="date" name="date" type="date">
+        <label for="description">Description</label>
+        <input id="description" name="description" autocomplete="off">
+        <label for="receipt">Receipt</label>
+        <input id="receipt" name="receipt" type="file" accept="image/*">
+      </div>
+      <p class="hint">Leave the amount empty to read it from the receipt.</p>
+      <div class="buttons"><button type="submit">Add purchase</button></div>
+    </form>
+  </div>
+
+  <div class="group">
+    <h2>Plan a purchase</h2>
+    <form method="get" action="{{ url_for('dashboard', project_id=project.id) }}">
+      <input type="hidden" name="tab" value="{{ tab }}">
+      <div class="fields inline">
+        <label for="plan">Amount</label>
+        <input id="plan" name="plan" inputmode="decimal" placeholder="40.00" value="{{ plan_text }}" autocomplete="off">
+        <button type="submit">Suggest payers</button>
+      </div>
+    </form>
+    {% if plan %}
+    <table class="result">
+      <thead><tr><th>Who pays</th><th class="num">Amount</th></tr></thead>
+      <tbody>
+        {% for member, amount in plan.items() %}
+        <tr><td>{{ member.name }}</td><td class="num">{{ amount.to_display() }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </div>
+
+{% endif %}
+{% endblock %}
+
+{% block data %}
+<nav class="tabs">
+  <a href="{{ url_for('dashboard', project_id=project.id, tab='members') }}" {% if tab == 'members' %}aria-current="page"{% endif %}>Members ({{ project.members|length }})</a>
+  <a href="{{ url_for('dashboard', project_id=project.id, tab='purchases') }}" {% if tab == 'purchases' %}aria-current="page"{% endif %}>Purchases ({{ project.expenses|length }})</a>
+  <a href="{{ url_for('dashboard', project_id=project.id, tab='balances') }}" {% if tab == 'balances' %}aria-current="page"{% endif %}>Balances</a>
+  <a href="{{ url_for('dashboard', project_id=project.id, tab='settle') }}" {% if tab == 'settle' %}aria-current="page"{% endif %}>Settle up</a>
+</nav>
+
+{% if tab == 'members' %}
+  {% if project.members %}
+  <table>
+    <thead><tr><th>Name</th><th class="num">Total paid</th></tr></thead>
+    <tbody>
+      {% for member in project.members %}
+      <tr><td>{{ member.name }}</td><td class="num">{{ paid[member].to_display() }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty">No members yet. Add the first one on the left.</p>
+  {% endif %}
+
+{% elif tab == 'purchases' %}
+  {% if project.expenses %}
+  <table>
+    <thead><tr><th>Date</th><th>Description</th><th>Paid by</th><th>Receipt</th><th class="num">Amount</th></tr></thead>
+    <tbody>
+      {% for expense in project.expenses %}
+      <tr>
+        <td>{{ expense.date }}</td>
+        <td>{{ expense.description }}</td>
+        <td>{{ expense.payer.name }}</td>
+        <td>{% if expense.proof is none %}None{% elif expense.proof.status == 'scanned' %}Scanned{% else %}Attached{% endif %}</td>
+        <td class="num">{{ expense.amount.to_display() }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot><tr><td colspan="4">Total</td><td class="num">{{ project.total_spent().to_display() }}</td></tr></tfoot>
+  </table>
+  {% else %}
+  <p class="empty">No purchases yet. Add one on the left.</p>
+  {% endif %}
+
+{% elif tab == 'balances' %}
+  {% if balances %}
+  <table>
+    <thead><tr><th>Member</th><th>Position</th><th class="num">Balance</th></tr></thead>
+    <tbody>
+      {% for member, amount in balances.items() %}
+      <tr>
+        <td>{{ member.name }}</td>
+        <td>{% if amount.cents > 0 %}Is owed{% elif amount.cents < 0 %}Owes{% else %}Even{% endif %}</td>
+        <td class="num">{{ amount.to_display() }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot><tr><td colspan="2">Sum of all balances</td><td class="num">{{ balances.values()|map(attribute='cents')|sum }} cents</td></tr></tfoot>
+  </table>
+  {% else %}
+  <p class="empty">Balances appear once the project has members.</p>
+  {% endif %}
+
+{% else %}
+  <div class="compare">
+    {% for name, transfers, ms in results %}
+    <div>
+      <h2>{{ name }}</h2>
+      {% if transfers is none %}
+        <p class="empty">Skipped: this method is too slow above {{ limit }} members.</p>
+      {% elif transfers %}
+        <p class="hint">{{ transfers|length }} transfer{% if transfers|length != 1 %}s{% endif %} in {{ '%.3f'|format(ms) }} ms</p>
+        <table>
+          <thead><tr><th>From</th><th>To</th><th class="num">Amount</th></tr></thead>
+          <tbody>
+            {% for transfer in transfers %}
+            <tr><td>{{ transfer.from_member.name }}</td><td>{{ transfer.to_member.name }}</td><td class="num">{{ transfer.amount.to_display() }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="empty">Nobody owes anything.</p>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+{% endif %}
 {% endblock %}

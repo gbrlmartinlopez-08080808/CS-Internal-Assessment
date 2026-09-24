@@ -3,62 +3,123 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}Shared Expense Settlement{% endblock %}</title>
+<title>{% block title %}Shared expenses{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@600&amp;display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0d0d;
-    --panel: #161616;
-    --line: #3a3a3a;
-    --text: #e8e8e8;
-    --dim: #888888;
+    --window: #ececec;
+    --field: #ffffff;
+    --line: #b5b5b5;
+    --line-soft: #dcdcdc;
+    --header: #e3e3e3;
+    --text: #1d1d1f;
+    --muted: #6e6e73;
+    --red: #c62828;
+    --open: #2c5d9e;
+    --settled: #2e7d32;
+    --selected: #f1c9cf;
+    --mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+    --sans: Inter, "Segoe UI", Helvetica, Arial, sans-serif;
   }
+
   * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    padding: 10px 14px;
-    background: var(--bg);
-    color: var(--text);
-    font-family: ui-monospace, "Cascadia Mono", "Consolas", "DejaVu Sans Mono", monospace;
-    font-size: 12px;
-    line-height: 1.35;
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--window); color: var(--text); font: 14px/1.4 var(--sans); }
+
+  .window { height: 100%; display: grid; grid-template-rows: auto 1fr auto; }
+
+  .titlebar { display: flex; align-items: baseline; gap: 1.5rem; padding: 0.9rem 1.25rem 0.6rem; }
+  h1 { font: 600 1.15rem var(--mono); margin: 0; }
+  .summary { margin: 0; font-weight: 600; display: flex; gap: 1.25rem; }
+  .actions { margin-left: auto; display: flex; align-items: center; gap: 1.25rem; }
+
+  .split { display: grid; grid-template-columns: 23rem 1fr; gap: 1.5rem; padding: 0.5rem 1.25rem 1rem; min-height: 0; }
+  .pane { min-height: 0; overflow: auto; }
+
+  h2 { font: 600 0.85rem var(--mono); margin: 0 0 0.6rem; }
+  .group + .group { margin-top: 1.4rem; }
+
+  .fields { display: grid; grid-template-columns: 7.5rem 1fr; gap: 0.45rem 0.75rem; align-items: center; }
+  .fields.inline { grid-template-columns: 7.5rem 1fr auto; }
+  label { color: var(--text); }
+  input, select {
+    width: 100%; height: 1.9rem; padding: 0 0.45rem;
+    font: inherit; color: var(--text);
+    background: var(--field); border: 1px solid var(--line); border-radius: 3px;
   }
-  main { max-width: 760px; margin: 0 auto; }
-  h1 { font-size: 13px; letter-spacing: 1.5px; margin: 0; }
-  .rule { color: var(--dim); margin-bottom: 8px; }
-  section {
-    border: 1px solid var(--line);
-    background: var(--panel);
-    padding: 6px 12px;
-    margin-bottom: 6px;
+  input[type="file"] { padding: 0.2rem; height: auto; }
+  .hint { color: var(--muted); font-size: 0.8rem; margin: 0.35rem 0 0; }
+
+  .buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+  button, a.button {
+    font: inherit; color: var(--text); text-decoration: none; display: inline-block;
+    background: var(--field); border: 1px solid var(--line); border-radius: 4px;
+    padding: 0.25rem 1rem; cursor: pointer;
   }
-  h2 { font-size: 12px; font-weight: bold; color: var(--text); margin: 0 0 6px; }
-  label { color: var(--dim); margin-right: 4px; }
-  input, select, button, a.btn {
-    font-family: inherit;
-    font-size: 11px;
-    background: var(--bg);
-    color: var(--text);
-    border: 1px solid var(--line);
-    padding: 3px 6px;
-    margin: 2px 4px 2px 0;
-    display: inline-block;
-    text-decoration: none;
+  button:hover:enabled, a.button:hover { color: var(--red); border-color: var(--red); }
+  button:active:enabled { background: var(--header); }
+  button:disabled { color: var(--muted); cursor: default; }
+
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: var(--red); text-decoration: underline; }
+  :focus-visible { outline: 2px solid var(--open); outline-offset: 1px; }
+
+  .tabs { display: flex; gap: 1.25rem; margin-bottom: 0.6rem; }
+  .tabs a { color: var(--muted); padding-bottom: 0.2rem; border-bottom: 2px solid transparent; }
+  .tabs a[aria-current="page"] { color: var(--text); border-bottom-color: var(--text); }
+
+  table { width: 100%; border-collapse: collapse; background: var(--field); border: 1px solid var(--line); }
+  th { background: var(--header); font-weight: 500; text-align: left; padding: 0.3rem 0.6rem; border-right: 1px solid var(--line-soft); border-bottom: 1px solid var(--line); }
+  td { padding: 0.3rem 0.6rem; border-bottom: 1px solid var(--line-soft); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  tfoot td { font-weight: 600; border-bottom: 0; }
+  tr.selected td { background: var(--selected); }
+  .empty { color: var(--muted); padding: 0.6rem 0; }
+  table.result { margin-top: 0.75rem; }
+  .compare { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; align-items: start; }
+  .compare .hint { margin: 0 0 0.4rem; }
+
+  .status::before { content: ""; display: inline-block; width: 0.55rem; height: 0.55rem; margin-right: 0.4rem; background: currentColor; }
+  .status.open { color: var(--open); }
+  .status.settled { color: var(--settled); }
+
+  .statusbar { border-top: 1px solid var(--line); padding: 0.3rem 1.25rem; min-height: 1.9rem; }
+  .statusbar .error { color: var(--red); }
+  .statusbar .idle { color: var(--muted); }
+
+  svg.lucide { width: 0.95rem; height: 0.95rem; vertical-align: -0.15rem; }
+
+  @media (max-width: 760px) {
+    .window { height: auto; }
+    .titlebar, .summary { flex-wrap: wrap; }
+    .split, .compare, .fields.inline { grid-template-columns: 1fr; }
+    .fields { grid-template-columns: 6.5rem 1fr; }
+    .fields.inline button { justify-self: start; }
   }
-  button, a.btn { cursor: pointer; }
-  button:hover, a.btn:hover { border-color: var(--text); }
-  table { border-collapse: collapse; width: 100%; }
-  td { padding: 1px 8px 1px 0; }
-  td.amount { text-align: right; width: 100px; }
-  .credit { font-weight: bold; }
-  .debit { font-style: italic; }
-  .dim { color: var(--dim); }
-  .message { border: 1px solid var(--text); padding: 5px 10px; margin-bottom: 6px; }
-  .empty { color: var(--dim); font-style: italic; }
 </style>
 </head>
 <body>
-<main>
-{% block content %}{% endblock %}
-</main>
+<div class="window">
+  <header class="titlebar">
+    {% block header %}{% endblock %}
+  </header>
+
+  <main class="split">
+    <section class="pane">{% block form %}{% endblock %}</section>
+    <section class="pane">{% block data %}{% endblock %}</section>
+  </main>
+
+  <footer class="statusbar" role="status">
+    {% for category, text in get_flashed_messages(with_categories=true) %}
+      <span class="{{ category }}">{{ text }}</span>
+    {% else %}
+      <span class="idle">Ready</span>
+    {% endfor %}
+  </footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>if (window.lucide) { lucide.createIcons(); }</script>
 </body>
 </html>
