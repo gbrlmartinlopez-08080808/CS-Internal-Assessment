@@ -22,20 +22,16 @@ class Project:
                 raise ValueError(f"{name} is already a member")
 
         self.member_seq += 1
-        member = Member(f"m{self.member_seq}", name, 1.0)
+        member = Member(f"m{self.member_seq}", name)
         self.members.append(member)
         return member
 
-    def add_expense(self, amount: Money, payer: Member, date: str, description: str, proof=None, participants=None):
+    def add_expense(self, amount: Money, payer: Member, date: str, description: str, proof=None):
         if self.status == "settled" or payer not in self.members:
             raise ValueError("The payment cannot be registered due to project closed, or payer unidentified")
-        if participants is not None:
-            for person in participants:
-                if person not in self.members:
-                    raise ValueError(f"{person.name} is not a member of this project")
 
         self.expense_seq += 1
-        expense = Expense(f"e{self.expense_seq}", amount, payer, date, description, proof, participants)
+        expense = Expense(f"e{self.expense_seq}", amount, payer, date, description, proof)
         self.expenses.append(expense)
         return expense
 

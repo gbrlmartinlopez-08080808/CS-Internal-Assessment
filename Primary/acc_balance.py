@@ -6,7 +6,6 @@ class Acc_balance:
 
     def __init__(self, project: Project):
         self.project = project
-        self.cached_balances = None
 
     def compute_balances(self):
 

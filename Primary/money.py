@@ -11,7 +11,7 @@ class Money:
 
         if clean_amount == "":
             raise ValueError("No amount was entered")
-        if clean_amount[0] == "-":
+        elif clean_amount[0] == "-":
             raise ValueError("An amount cannot be negative")
 
         if "." in clean_amount:
@@ -47,9 +47,6 @@ class Money:
 
     def add(self, other):
         return Money(self.cents + other.cents)
-
-    def __add__(self, other):
-        return (self.add(other))
 
 
     def even_split(self, n):

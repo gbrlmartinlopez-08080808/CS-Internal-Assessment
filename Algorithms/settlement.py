@@ -74,12 +74,12 @@ def balance_settle(debtors: dict[Member, Money], creditors: dict[Member, Money])
             d_members.pop(0)
             d_cents.pop(0)
 
-        restore_order(d_cents, d_members)
-        restore_order(c_cents, c_members)
-
         if c_cents[0] == 0:
             c_members.pop(0)
             c_cents.pop(0)
+
+        restore_order(d_cents, d_members)
+        restore_order(c_cents, c_members)
 
     return (transfers)
 
@@ -154,7 +154,7 @@ def match_in_order(d_members, d_cents, c_members, c_cents):
 
         t = Transfer (
             from_member = d_members[i],
-            to_member = c_members[i],
+            to_member = c_members[j],
             amount = Money(amount)
         )
         transfers.append(t)
@@ -176,20 +176,20 @@ def brute_force_settle(debtors: dict[Member, Money], creditors: dict[Member, Mon
     for d_order in permutations(range(len(d_members))):
         try_d_members = []
         try_d_cents = []
-        for k in d_order:
-            try_d_members.append(d_members[k])
-            try_d_cents.append(d_cents[k])
+    for k in d_order:
+        try_d_members.append(d_members[k])
+        try_d_cents.append(d_cents[k])
 
         for c_order in permutations(range(len(c_members))):
             try_c_members = []
             try_c_cents = []
         for k in c_order:
-            try_c_members.append(d_members[k])
-            try_c_cents.append(d_cents[k])
+            try_c_members.append(c_members[k])
+            try_c_cents.append(c_cents[k])
 
-        attempt = match_in_order(try_d_members, try_d_cents, try_c_members, try_c_cents)
-        if best is None or len(attempt) < len(best):
-            best = attempt
+            attempt = match_in_order(try_d_members, try_d_cents, try_c_members, try_c_cents)
+            if best is None or len(attempt) < len(best):
+                best = attempt
 
     return (best)
 
