@@ -1,21 +1,19 @@
 import os
-import time
 
 from flask import Flask, render_template, redirect, url_for, request, flash, abort
 from werkzeug.utils import secure_filename
 
 from Primary.money import Money
 from Primary.project import Project
-from Primary.proof import Proof
 from Primary.acc_balance import Acc_balance
-from Algorithms.settlement import balance_settle, pair_first_settle, brute_force_settle
+from Algorithms.settlement import pair_first_settle
 from Algorithms.allocation import allocate_proportional
-from OCR.OCR_text_extraction import read_receipt, file_hash
+from OCR.OCR_text_extraction import read_receipt
 
 app = Flask(__name__)
 app.secret_key = "local-only"
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "..", "uploads")
-BRUTE_FORCE_LIMIT = 9
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 projects = []
 project_seq = 0
@@ -35,30 +33,9 @@ def find_member(project, member_id):
     return None
 
 
-def read_amount(text):
-    try:
-        return Money.from_display(text.replace(",", "."))
-    except ValueError:
-        raise ValueError(f"{text} is not an amount, write it like 12.50")
-
-
 @app.route("/")
 def index():
-    show = request.args.get("show", "all")
-    shown = []
-    open_count = 0
-    for project in projects:
-        if project.status == "open":
-            open_count += 1
-        if show == "all" or project.status == show:
-            shown.append(project)
-
-    editing = None
-    if request.args.get("edit") is not None:
-        editing = find_project(request.args.get("edit"))
-
-    return render_template("projects.html", shown=shown, total=len(projects),
-                           open_count=open_count, show=show, editing=editing)
+    return render_template("projects.html", projects=projects)
 
 
 @app.route("/projects/new", methods=["POST"])
@@ -71,18 +48,6 @@ def create_project():
         project_seq += 1
         projects.append(Project(f"p{project_seq}", name))
         flash(f"Created {name}")
-    return redirect(url_for("index"))
-
-
-@app.route("/projects/<project_id>/rename", methods=["POST"])
-def rename_project(project_id):
-    project = find_project(project_id)
-    name = request.form.get("name", "").strip()
-    if name == "":
-        flash("A project needs a name", "error")
-        return redirect(url_for("index", edit=project_id))
-    project.name = name
-    flash(f"Renamed to {name}")
     return redirect(url_for("index"))
 
 
@@ -100,35 +65,22 @@ def dashboard(project_id):
     tab = request.args.get("tab", "members")
     ledger = Acc_balance(project)
     balances = ledger.compute_balances()
-
-    paid = {}
-    for member in project.members:
-        paid[member] = Money(0)
-    for expense in project.expenses:
-        paid[expense.payer] = paid[expense.payer] + expense.amount
+    transfers = pair_first_settle(ledger.debtors(), ledger.creditors())
 
     plan_text = request.args.get("plan", "").strip()
+    payers = request.args.get("payers", "all")
     plan = None
     if plan_text != "":
         try:
-            plan = allocate_proportional(read_amount(plan_text), ledger.debtors())
+            num_payers = "all"
+            if payers != "all":
+                num_payers = int(payers)
+            plan = allocate_proportional(Money.from_display(plan_text), balances, num_payers=num_payers)
         except ValueError as error:
             flash(str(error), "error")
 
-    results = []
-    if tab == "settle":
-        methods = [("Greedy", balance_settle), ("Pair-first", pair_first_settle), ("Brute force", brute_force_settle)]
-        for name, method in methods:
-            if method == brute_force_settle and len(project.members) > BRUTE_FORCE_LIMIT:
-                results.append((name, None, 0))
-            else:
-                start = time.perf_counter()
-                transfers = method(ledger.debtors(), ledger.creditors())
-                results.append((name, transfers, (time.perf_counter() - start) * 1000))
-
     return render_template("dashboard.html", project=project, tab=tab, balances=balances,
-                           paid=paid, plan=plan, plan_text=plan_text, results=results,
-                           limit=BRUTE_FORCE_LIMIT)
+                           transfers=transfers, plan=plan, plan_text=plan_text, payers=payers)
 
 
 @app.route("/projects/<project_id>/member", methods=["POST"])
@@ -152,32 +104,25 @@ def add_purchase(project_id):
     receipt = request.files.get("receipt")
 
     try:
-        if payer is None:
-            raise ValueError("Add a member first, then choose who paid")
-
         proof = None
         if receipt is not None and receipt.filename != "":
-            os.makedirs(UPLOAD_FOLDER, exist_ok=True)
             path = os.path.join(UPLOAD_FOLDER, f"{project.id}_{project.expense_seq + 1}_{secure_filename(receipt.filename)}")
             receipt.save(path)
-
-            if amount_text == "":
-                proof = read_receipt(path)
+            proof = read_receipt(path)
+            if amount_text == "" and proof.extr_total is not None:
                 amount_text = proof.extr_total.to_display()
-                if date == "" and proof.extr_date is not None:
-                    date = proof.extr_date
-            else:
-                proof = Proof(path, file_hash(path))
-
-            for expense in project.expenses:
-                if expense.proof is not None and expense.proof.image_hash == proof.image_hash:
-                    raise ValueError("This receipt has already been added")
+            if date == "" and proof.extr_date is not None:
+                date = proof.extr_date
 
         if amount_text == "":
-            raise ValueError("Type the amount, or attach a receipt to read it from")
-        amount = read_amount(amount_text)
+            raise ValueError("Type the amount, or attach a receipt with a readable total")
+        amount = Money.from_display(amount_text)
         project.add_expense(amount, payer, date, description, proof)
-        flash(f"Added {amount.to_display()} paid by {payer.name}")
+
+        message = f"Added {amount.to_display()} paid by {payer.name}"
+        if proof is not None and proof.status == "unreadable":
+            message += ", but the receipt could not be read"
+        flash(message)
     except ValueError as error:
         flash(str(error), "error")
 

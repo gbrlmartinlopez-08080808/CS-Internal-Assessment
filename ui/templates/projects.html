@@ -2,66 +2,47 @@
 
 {% block header %}
 <h1>Shared expenses</h1>
-<p class="summary">
-  <span>Projects: {{ total }}</span>
-  <span>Open: {{ open_count }}</span>
-  <span>Settled: {{ total - open_count }}</span>
-</p>
+<p class="summary"><span>Projects: {{ projects|length }}</span></p>
 {% endblock %}
 
 {% block form %}
 <div class="group">
-  <h2>Project details</h2>
+  <h2>New project</h2>
   <form method="post" action="{{ url_for('create_project') }}">
-    <div class="fields">
+    <div class="fields inline">
       <label for="name">Name</label>
-      <input id="name" name="name" autocomplete="off" value="{{ editing.name if editing else '' }}">
-    </div>
-    <div class="buttons">
+      <input id="name" name="name" autocomplete="off">
       <button type="submit">Create</button>
-      {% if editing %}
-        <button type="submit" formaction="{{ url_for('rename_project', project_id=editing.id) }}">Rename</button>
-        <button type="submit" formaction="{{ url_for('delete_project', project_id=editing.id) }}"
-                onclick="return confirm('Delete this project and all its purchases?')">Delete</button>
-      {% else %}
-        <button type="button" disabled>Rename</button>
-        <button type="button" disabled>Delete</button>
-      {% endif %}
-      <a class="button" href="{{ url_for('index', show=show) }}">Clear</a>
     </div>
-    <p class="hint">Select a project with its edit icon to rename or delete it.</p>
   </form>
 </div>
 {% endblock %}
 
 {% block data %}
-<nav class="tabs">
-  <a href="{{ url_for('index') }}" {% if show == 'all' %}aria-current="page"{% endif %}>All</a>
-  <a href="{{ url_for('index', show='open') }}" {% if show == 'open' %}aria-current="page"{% endif %}>Open</a>
-  <a href="{{ url_for('index', show='settled') }}" {% if show == 'settled' %}aria-current="page"{% endif %}>Settled</a>
-</nav>
-
-{% if shown %}
+{% if projects %}
 <table>
   <thead>
     <tr><th>Name</th><th class="num">Members</th><th class="num">Purchases</th><th class="num">Total spent</th><th>Status</th><th></th></tr>
   </thead>
   <tbody>
-    {% for project in shown %}
-    <tr {% if editing and editing.id == project.id %}class="selected"{% endif %}>
+    {% for project in projects %}
+    <tr>
       <td><a href="{{ url_for('dashboard', project_id=project.id) }}">{{ project.name }}</a></td>
       <td class="num">{{ project.members|length }}</td>
       <td class="num">{{ project.expenses|length }}</td>
       <td class="num">{{ project.total_spent().to_display() }}</td>
-      <td><span class="status {{ project.status }}">{{ project.status|capitalize }}</span></td>
-      <td class="num"><a href="{{ url_for('index', show=show, edit=project.id) }}" aria-label="Edit {{ project.name }}"><i data-lucide="pencil"></i></a></td>
+      <td class="status {{ project.status }}">{{ project.status|capitalize }}</td>
+      <td class="num">
+        <form method="post" action="{{ url_for('delete_project', project_id=project.id) }}"
+              onsubmit="return confirm('Delete this project and all its purchases?')">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
-{% elif total == 0 %}
-<p class="empty">No projects yet. Create one on the left.</p>
 {% else %}
-<p class="empty">No {{ show }} projects.</p>
+<p class="empty">No projects yet. Create one on the left.</p>
 {% endif %}
 {% endblock %}

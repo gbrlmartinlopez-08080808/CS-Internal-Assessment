@@ -4,19 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17612b3f-ec2f-4b31-9d2b-8ea0c674abb6" name="Changes" comment="UI template addition">
+    <list default="true" id="17612b3f-ec2f-4b31-9d2b-8ea0c674abb6" name="Changes" comment="Small bug fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algorithms/allocation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Algorithms/allocation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Algorithms/settlement.py" beforeDir="false" afterPath="$PROJECT_DIR$/Algorithms/settlement.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Primary/acc_balance.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/acc_balance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Primary/expense.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/expense.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Primary/member.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/member.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OCR/OCR_text_extraction.py" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/OCR_text_extraction.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Primary/money.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/money.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Primary/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/project.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/database.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/repository.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/schema.sql.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Primary/proof.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/proof.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/ui/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/ui/templates/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/templates/projects.html" beforeDir="false" afterPath="$PROJECT_DIR$/ui/templates/projects.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -230,7 +227,15 @@
       <option name="project" value="LOCAL" />
       <updated>1790286497170</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Small bug fixes">
+      <option name="closed" value="true" />
+      <created>1790336853958</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1790336853958</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -254,6 +259,7 @@
     <MESSAGE value="OCR implementation" />
     <MESSAGE value="Small bug fixing (adding to server)" />
     <MESSAGE value="UI template addition" />
-    <option name="LAST_COMMIT_MESSAGE" value="UI template addition" />
+    <MESSAGE value="Small bug fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Small bug fixes" />
   </component>
 </project>

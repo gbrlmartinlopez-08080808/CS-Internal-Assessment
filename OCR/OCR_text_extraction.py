@@ -1,3 +1,4 @@
+import os
 import re
 import hashlib
 
@@ -7,34 +8,33 @@ from PIL import Image
 from Primary.money import Money
 from Primary.proof import Proof
 
+TESSERACT_LOCATIONS = [r"C:\Program Files\Tesseract-OCR\tesseract.exe", "/opt/homebrew/bin/tesseract", "/usr/local/bin/tesseract"]
+for location in TESSERACT_LOCATIONS:
+    if os.path.exists(location):
+        pytesseract.pytesseract.tesseract_cmd = location
+        break
+
+
 def file_hash(image_path: str):
     with open(image_path, "rb") as file:
         return (hashlib.sha256(file.read()).hexdigest())
 
 def read_receipt(image_path: str):
-    image = None
+    image_hash = file_hash(image_path)
     try:
-        image_hash = file_hash(image_path)
         image = Image.open(image_path)
         raw_text = pytesseract.image_to_string(image)
-    except (FileNotFoundError, pytesseract.TesseractNotFoundError, OSError, pytesseract.TesseractError):
-        raise ValueError("The receipt file could not be found, or could not be parsed, please enter details manually")
-    finally:
-        if image is not None:
-            image.close()
+    except pytesseract.TesseractNotFoundError:
+        raise ValueError("Tesseract (OCR parsing software) is not installed, so the recept cannot be read, please type the amount instead")
+    except (OSError, pytesseract.TesseractError):
+        raise ValueError("The receipt could not be opened or read, please type the amount instead")
 
-    total, date, merchant = parse_receipt_text(raw_text)
-    if total is None:
-        raise ValueError("Total could not be found, please enter details manually")
-
-    return Proof(
-        file_path = image_path,
-        image_hash = image_hash,
-        ocr_text = raw_text,
-        extr_total = total,
-        extr_date = date,
+    total, date = parse_receipt_text(raw_text)
+    status = "unreadable"
+    if total is not None:
         status = "scanned"
-    )
+
+    return Proof(image_path, image_hash, raw_text, total, date, status)
 
 def parse_receipt_text(raw_text: str):
 

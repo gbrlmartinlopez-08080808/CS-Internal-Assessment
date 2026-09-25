@@ -27,22 +27,19 @@ class Project:
         return member
 
     def add_expense(self, amount: Money, payer: Member, date: str, description: str, proof=None):
-        if self.status == "settled" or payer not in self.members:
-            raise ValueError("The payment cannot be registered due to project closed, or payer unidentified")
+        if self.status == "settled":
+            raise ValueError("The purchase cannot be registered, the project is closed")
+        elif payer not in self.members:
+            raise ValueError("The payment cannot be registered, register payer correctly")
+
+        for expense in self.expenses:
+            if proof is not None and expense.proof is not None and expense.proof.impage_hash == proof.image_hash:
+                raise ValueError("This receipt has already been added")
 
         self.expense_seq += 1
         expense = Expense(f"e{self.expense_seq}", amount, payer, date, description, proof)
         self.expenses.append(expense)
         return expense
-
-    def restore_member(self, member):
-        for existing in self.members:
-            if existing.id == member.id:
-                raise ValueError(f"Duplicate member id: {member.id}")
-        self.members.append(member)
-        number = int(member.id[1:])
-        if number > self.member_seq:
-            self.member_seq = number
 
     def total_spent(self):
         total_cents = 0
