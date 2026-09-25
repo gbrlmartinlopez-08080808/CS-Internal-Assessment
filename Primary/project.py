@@ -33,7 +33,7 @@ class Project:
             raise ValueError("The payment cannot be registered, register payer correctly")
 
         for expense in self.expenses:
-            if proof is not None and expense.proof is not None and expense.proof.impage_hash == proof.image_hash:
+            if proof is not None and expense.proof is not None and expense.proof.image_hash == proof.image_hash:
                 raise ValueError("This receipt has already been added")
 
         self.expense_seq += 1

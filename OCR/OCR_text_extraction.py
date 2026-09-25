@@ -8,11 +8,9 @@ from PIL import Image
 from Primary.money import Money
 from Primary.proof import Proof
 
-TESSERACT_LOCATIONS = [r"C:\Program Files\Tesseract-OCR\tesseract.exe", "/opt/homebrew/bin/tesseract", "/usr/local/bin/tesseract"]
-for location in TESSERACT_LOCATIONS:
-    if os.path.exists(location):
-        pytesseract.pytesseract.tesseract_cmd = location
-        break
+windows_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe\tesseract.exe"
+if os.path.exists(windows_tesseract):
+    pytesseract.pytesseract.tesseract_cmd = windows_tesseract
 
 
 def file_hash(image_path: str):
@@ -29,7 +27,12 @@ def read_receipt(image_path: str):
     except (OSError, pytesseract.TesseractError):
         raise ValueError("The receipt could not be opened or read, please type the amount instead")
 
-    total, date = parse_receipt_text(raw_text)
+    for psm in (3, 4):
+        raw_text = pytesseract.image_to_string(image, config=f"--psm {psm}")
+        total, date = parse_receipt_text(raw_text)
+        if total is not None:
+            break
+
     status = "unreadable"
     if total is not None:
         status = "scanned"
@@ -38,7 +41,7 @@ def read_receipt(image_path: str):
 
 def parse_receipt_text(raw_text: str):
 
-    amount_pattern = r"(?<![\d.,])\d+[.,]\d{2}(?!\d|[.,]\d)"
+    amount_pattern = r"(?<![\d.,])\d+(?:[.,]\d{2})?(?!\d|[.,]\d)"
     date_pattern = r"\b(\d{1,2})[/.-](\d{1,2})[/.-](\d{4}|\d{2})\b"
 
     lines = []
@@ -63,7 +66,7 @@ def parse_receipt_text(raw_text: str):
     total = None
     for line in lines:
         upper = line.upper()
-        if "TOTAL" in upper and "SUBTOTAL" not in upper:
+        if ("TOTAL" in upper or "AMOUNT" in upper) and "SUBTOTAL" not in upper:
             for text in re.findall(amount_pattern, line):
                 amount = Money.from_display(text.replace(",", "."))
                 if amount.cents > 0:

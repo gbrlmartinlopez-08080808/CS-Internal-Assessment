@@ -30,7 +30,7 @@ def sort_parallel_settle(debtors: dict[Member, Money], creditors: dict[Member, M
             c_cents.append(money.cents)
 
     sort_descending(d_cents, d_members)
-    sort_descending(d_cents, d_members)
+    sort_descending(c_cents, c_members)
 
     return (d_members, d_cents, c_members, c_cents)
 
@@ -45,24 +45,25 @@ def balance_settle(debtors: dict[Member, Money], creditors: dict[Member, Money])
     d_members, d_cents, c_members, c_cents = sort_parallel_settle(debtors, creditors)
     transfers = []
 
-    if d_cents[0] < c_cents[0]:
-        settle_cents = d_cents[0]
-    else:
-        settle_cents = c_cents[0]
+    while len(d_cents) > 0 and len(c_cents) > 0:
+        if d_cents[0] < c_cents[0]:
+            settle_cents = d_cents[0]
+        else:
+            settle_cents = c_cents[0]
 
-    transfers.append(Transfer(d_members[0], c_members[0], Money(settle_cents)))
-    d_cents[0] = d_cents[0] - settle_cents
-    c_cents[0] = c_cents[0] - settle_cents
+        transfers.append(Transfer(d_members[0], c_members[0], Money(settle_cents)))
+        d_cents[0] = d_cents[0] - settle_cents
+        c_cents[0] = c_cents[0] - settle_cents
 
-    if d_cents[0] == 0:
-        d_members.pop(0)
-        d_cents.pop(0)
-    if c_cents[0] == 0:
-        c_members.pop(0)
-        c_cents.pop(0)
+        if d_cents[0] == 0:
+            d_members.pop(0)
+            d_cents.pop(0)
+        if c_cents[0] == 0:
+            c_members.pop(0)
+            c_cents.pop(0)
 
-    restore_order(d_cents, d_members)
-    restore_order(c_cents, c_members)
+        restore_order(d_cents, d_members)
+        restore_order(c_cents, c_members)
 
     return (transfers)
 
@@ -152,10 +153,9 @@ def brute_force_settle(debtors: dict[Member, Money], creditors: dict[Member, Mon
         for c_order in permutations(range(len(c_members))):
             try_c_members = []
             try_c_cents = []
-
-        for k in c_order:
-            try_c_members.append(c_members[k])
-            try_c_cents.append(c_cents[k])
+            for k in c_order:
+                try_c_members.append(c_members[k])
+                try_c_cents.append(c_cents[k])
 
             attempt = match_in_order(try_d_members, try_d_cents, try_c_members, try_c_cents)
             if best is None or len(attempt) < len(best):
