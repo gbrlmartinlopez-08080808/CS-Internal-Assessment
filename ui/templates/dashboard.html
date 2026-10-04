@@ -17,6 +17,7 @@
     <button type="submit">Close project</button>
   </form>
   {% endif %}
+  <a href="{{ url_for('download_project', project_id=project.id) }}">Download JSON</a>
   <a href="{{ url_for('index') }}">Back to projects</a>
 </div>
 {% endblock %}
@@ -59,6 +60,18 @@
       </div>
       <p class="hint">Leave the amount or date empty to read them from the receipt.</p>
       <div class="buttons"><button type="submit">Add purchase</button></div>
+    </form>
+  </div>
+  <div class="group">
+    <h2>Replace with a file</h2>
+    <form method="post" action="{{ url_for('import_project') }}" enctype="multipart/form-data"
+          onsubmit="return confirm('Replace everything in this project with the file?')">
+      <input type="hidden" name="target" value="{{ project.id }}">
+      <div class="fields inline">
+        <label for="file">JSON file</label>
+        <input id="file" name="file" type="file" accept=".json">
+        <button type="submit">Replace</button>
+      </div>
     </form>
   </div>
 {% endif %}

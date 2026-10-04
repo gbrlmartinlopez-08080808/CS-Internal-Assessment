@@ -16,6 +16,17 @@
     </div>
   </form>
 </div>
+
+<div class="group">
+  <h2>Import project</h2>
+  <form method="post" action="{{ url_for('import_project') }}" enctype="multipart/form-data">
+    <div class="fields inline">
+      <label for="file">JSON file</label>
+      <input id="file" name="file" type="file" accept=".json">
+      <button type="submit">Import</button>
+    </div>
+  </form>
+</div>
 {% endblock %}
 
 {% block data %}

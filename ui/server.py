@@ -1,6 +1,7 @@
 import os
+import json
 
-from flask import Flask, render_template, redirect, url_for, request, flash, abort
+from flask import Flask, render_template, redirect, url_for, request, flash, abort, Response
 from werkzeug.utils import secure_filename
 
 from Primary.money import Money
@@ -9,14 +10,23 @@ from Primary.acc_balance import Acc_balance
 from Algorithms.settlement import pair_first_settle
 from Algorithms.allocation import allocate_proportional
 from OCR.OCR_text_extraction import read_receipt
+from data.store import save_all, load_all, project_to_dict, project_from_dict
 
 app = Flask(__name__)
 app.secret_key = "local-only"
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "..", "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-projects = []
+projects = load_all()
 project_seq = 0
+for project in projects:
+    project_seq = max(project_seq, int(project.id[1:]))
+
+
+@app.after_request
+def save_after_each_request(response):
+    save_all(projects)
+    return response
 
 
 def find_project(project_id):
@@ -63,6 +73,7 @@ def delete_project(project_id):
 def dashboard(project_id):
     project = find_project(project_id)
     tab = request.args.get("tab", "members")
+
     ledger = Acc_balance(project)
     balances = ledger.compute_balances()
     transfers = pair_first_settle(ledger.debtors(), ledger.creditors())
@@ -127,6 +138,41 @@ def add_purchase(project_id):
         flash(str(error), "error")
 
     return redirect(url_for("dashboard", project_id=project_id, tab="purchases"))
+
+
+@app.route("/projects/<project_id>/download")
+def download_project(project_id):
+    project = find_project(project_id)
+    data = json.dumps(project_to_dict(project), indent=2)
+
+    filename = f"{project.id}_{secure_filename(project.name)}.json"
+
+    return Response(data, mimetype="application/json",
+                    headers={"Content-Disposition": f"attachment; filename={filename}"})
+
+
+@app.route("/import", methods=["POST"])
+def import_project():
+    global project_seq
+
+    try:
+        project = project_from_dict(json.load(request.files["file"]))
+    except (KeyError, TypeError, ValueError):
+        flash("That is not a valid project file", "error")
+        return redirect(request.referrer or url_for("index"))
+
+    target = request.form.get("target", "")
+    if target == "":
+        project_seq += 1
+        project.id = f"p{project_seq}"
+        projects.append(project)
+    else:
+        project.id = target
+        position = projects.index(find_project(target))
+        projects[position] = project
+
+    flash(f"Imported {project.name}")
+    return redirect(url_for("dashboard", project_id=project.id))
 
 
 @app.route("/projects/<project_id>/close", methods=["POST"])
