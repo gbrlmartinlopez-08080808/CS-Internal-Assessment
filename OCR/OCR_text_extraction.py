@@ -20,17 +20,16 @@ def file_hash(image_path: str):
 def read_receipt(image_path: str):
     image_hash = file_hash(image_path)
     try:
-        image = Image.open(image_path)
-        raw_text = pytesseract.image_to_string(image)
-    except pytesseract.TesseractNotFoundError:
-        raise ValueError("Tesseract (OCR parsing software) is not installed, so the recept cannot be read, please type the amount instead")
-    except (OSError, pytesseract.TesseractError):
-        raise ValueError("The receipt could not be opened or read, please type the amount instead")
+        image = Image.open(image_path)                              # Pillow opens the file
+    except pytesseract.TesseractNotFoundError:                      # OCR engine not installed
+        raise ValueError("..., please type the amount instead")
+    except (OSError, pytesseract.TesseractError):                   # not an image, or cannot be read
+        raise ValueError("..., please type the amount instead")
 
-    for psm in (3, 4):
+    for psm in (3, 4):                                              # two page layouts: automatic, then single column
         raw_text = pytesseract.image_to_string(image, config=f"--psm {psm}")
         total, date = parse_receipt_text(raw_text)
-        if total is not None:
+        if total is not None:                                       # stop at the first layout that gives a total
             break
 
     status = "unreadable"
