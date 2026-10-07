@@ -26,7 +26,7 @@ def read_receipt(image_path: str):
     except (OSError, pytesseract.TesseractError):                   # not an image, or cannot be read
         raise ValueError("..., please type the amount instead")
 
-    for psm in (3, 4):                                              # try two-page layouts: automatic, then single column
+    for psm in (3, 4):                                              # try two-page layouts: automatic & single column
         raw_text = pytesseract.image_to_string(image, config=f"--psm {psm}")
         total, date = parse_receipt_text(raw_text)
         if total is not None:                                       # stop at the first layout that gives a total
