@@ -7,24 +7,24 @@ class Money:
 
     @classmethod
     def from_display(cls, amount):
-        clean_amount = amount.strip().strip("€").strip().replace(",", ".")
+        clean_amount = amount.strip().strip("€").strip().replace(",", ".")  # from $10,80_ to 10.80
 
-        if clean_amount == "":
+        if clean_amount == "":                              # error handling for no amount
             raise ValueError("No amount was entered")
         elif clean_amount[0] == "-":
             raise ValueError("An amount cannot be negative")
         try:
             if "." in clean_amount:
-                euros, cents = clean_amount.split(".", 1)
-                if len(cents) == 0:
+                euros, cents = clean_amount.split(".", 1)   # split [10]: euros & [80]: cents
+                if len(cents) == 0:                         # homogenization of .0 to .00
                     cents = "00"
                 elif len(cents) == 1:
                     cents = cents + "0"
                 else:
                     cents = cents[0:2]
-                total_cents = int(euros) * 100 + int(cents)
+                total_cents = int(euros) * 100 + int(cents) # final result
             else:
-                total_cents = int(clean_amount) * 100
+                total_cents = int(clean_amount) * 100       # for cases with no cents
         except ValueError:
             raise ValueError(f"{amount} is not an amount, type it as (euros).(cents)")
         return cls(total_cents)
