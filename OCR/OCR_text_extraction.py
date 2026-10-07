@@ -64,12 +64,12 @@ def parse_receipt_text(raw_text: str):
 
     total = None
     for line in lines:
-        upper = line.upper()
+        upper = line.upper()                            # ignore capital letters
         if ("TOTAL" in upper or "AMOUNT" in upper) and "SUBTOTAL" not in upper:
-            for text in re.findall(amount_pattern, line):
+            for text in re.findall(amount_pattern, line):   # every number on that line
                 amount = Money.from_display(text.replace(",", "."))
                 if amount.cents > 0:
-                    if total is None or amount.cents > total.cents:
+                    if total is None or amount.cents > total.cents: # keep the largest
                         total = amount
 
     return (total, date)
