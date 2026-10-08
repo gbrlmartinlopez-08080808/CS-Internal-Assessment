@@ -48,11 +48,11 @@ class Money:
         if n <= 0:
             raise ValueError("Money cannot be split between zero people")
         else:
-            share = self.cents // n
-            remainder = self.cents % n
+            share = self.cents // n         # whole cents each
+            remainder = self.cents % n      # cents left over
             share_list = []
             for i in range(n):
-                if i < remainder:
+                if i < remainder:           # the first members take one extra cent (until divided)
                     share_list.append(Money(share + 1))
                 else:
                     share_list.append(Money(share))

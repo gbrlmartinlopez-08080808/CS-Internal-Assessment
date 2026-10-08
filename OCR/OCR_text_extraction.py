@@ -1,7 +1,6 @@
 import os
 import re
 import hashlib
-
 import pytesseract
 from PIL import Image
 
