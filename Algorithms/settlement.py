@@ -45,23 +45,20 @@ def balance_settle(debtors: dict[Member, Money], creditors: dict[Member, Money])
     d_members, d_cents, c_members, c_cents = sort_parallel_settle(debtors, creditors)
     transfers = []
 
-    while len(d_cents) > 0 and len(c_cents) > 0:
-        if d_cents[0] < c_cents[0]:
+    while len(d_cents) > 0 and len(c_cents) > 0:  # match greatest with smallest until none left
+        if d_cents[0] < c_cents[0]:         # position 0 holds the largest of each list
             settle_cents = d_cents[0]
         else:
             settle_cents = c_cents[0]
-
         transfers.append(Transfer(d_members[0], c_members[0], Money(settle_cents)))
-        d_cents[0] = d_cents[0] - settle_cents
+        d_cents[0] = d_cents[0] - settle_cents     # the greater amount will be passed onto the next transaction
         c_cents[0] = c_cents[0] - settle_cents
-
-        if d_cents[0] == 0:
+        if d_cents[0] == 0:            # deleting the already settled members from the lists
             d_members.pop(0)
             d_cents.pop(0)
         if c_cents[0] == 0:
             c_members.pop(0)
             c_cents.pop(0)
-
         restore_order(d_cents, d_members)
         restore_order(c_cents, c_members)
 
