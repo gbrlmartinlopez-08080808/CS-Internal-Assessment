@@ -141,24 +141,20 @@ def match_in_order(d_members, d_cents, c_members, c_cents):
 def brute_force_settle(debtors: dict[Member, Money], creditors: dict[Member, Money]):
     d_members, d_cents, c_members, c_cents = sort_parallel_settle(debtors, creditors)
     best = None
-
-    for d_order in permutations(range(len(d_members))):
+    for d_order in permutations(range(len(d_members))):  # every order of the debtors
         try_d_members = []
         try_d_cents = []
-
         for k in d_order:
             try_d_members.append(d_members[k])
             try_d_cents.append(d_cents[k])
-
-        for c_order in permutations(range(len(c_members))):
+        for c_order in permutations(range(len(c_members))): # combined with every order of the creditors
             try_c_members = []
             try_c_cents = []
             for k in c_order:
                 try_c_members.append(c_members[k])
                 try_c_cents.append(c_cents[k])
-
             attempt = match_in_order(try_d_members, try_d_cents, try_c_members, try_c_cents)
             if best is None or len(attempt) < len(best):
-                best = attempt
+                best = attempt       # selecting the minimum amount of transfers
 
     return (best)
