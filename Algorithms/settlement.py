@@ -72,30 +72,27 @@ def pair_first_settle(debtors: dict[Member, Money], creditors: dict[Member, Mone
     i = 0
     while i < len(d_cents):
         target_cents = d_cents[i]
-
         low = 0
         high = len(c_cents)-1
         match_idx = -1
-
         while low <= high:
             mid = (low + high) // 2
 
-            if c_cents[mid] == target_cents:
+            if c_cents[mid] == target_cents:       # a creditor owed exactly what this debtor owes
                 match_idx = mid
                 break
-            elif c_cents[mid] < target_cents:
+            elif c_cents[mid] < target_cents:      # list is largest first, so search the left half
                 high = mid - 1
             else:
                 low = mid + 1
-
         if match_idx != -1:
             transfers.append(Transfer(d_members[i], c_members[match_idx], Money(target_cents)))
-            d_members.pop(i)
+            d_members.pop(i)                       # an exact match with clear both members
             d_cents.pop(i)
             c_members.pop(match_idx)
             c_cents.pop(match_idx)
         else:
-            i += 1
+            i += 1                                # since no exact match, try the next debtor
 
     rest_debtors = {}
     for i in range(len(d_members)):
