@@ -51,7 +51,7 @@ def balance_settle(debtors: dict[Member, Money], creditors: dict[Member, Money])
         else:
             settle_cents = c_cents[0]
         transfers.append(Transfer(d_members[0], c_members[0], Money(settle_cents)))
-        d_cents[0] = d_cents[0] - settle_cents     # the greater amount will be passed onto the next transaction
+        d_cents[0] = d_cents[0] - settle_cents     # the greater amount is passed onto next transact.
         c_cents[0] = c_cents[0] - settle_cents
         if d_cents[0] == 0:            # deleting the already settled members from the lists
             d_members.pop(0)
