@@ -12,9 +12,9 @@ class Acc_balance:
         for member in self.project.members:
             raw_balances[member] = 0
         for expense in self.project.expenses:
-            raw_balances[expense.payer] += expense.amount.cents     # add the expense to the payer
+            raw_balances[expense.payer] += expense.amount.cents     # add total to payer
             shares = expense.split_between(self.project.members)
-            for member, share in shares.items():                    # distribute the rest of the members' shares
+            for member, share in shares.items():                    # distribute rest shares
                 raw_balances[member] -= share.cents
 
         balances = {}
