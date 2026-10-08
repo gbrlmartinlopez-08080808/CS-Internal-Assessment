@@ -56,7 +56,6 @@ class Money:
                     share_list.append(Money(share + 1))
                 else:
                     share_list.append(Money(share))
-
             return (share_list)
 
 

@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="17612b3f-ec2f-4b31-9d2b-8ea0c674abb6" name="Changes" comment="comments">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OCR/OCR_text_extraction.py" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/OCR_text_extraction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Primary/acc_balance.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/acc_balance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Primary/money.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/money.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +42,7 @@
     <urls />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="AISelfReview" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
@@ -316,7 +317,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791412502198</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="comments">
+      <option name="closed" value="true" />
+      <created>1791448821288</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1791448821288</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
