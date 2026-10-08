@@ -8,7 +8,6 @@ class Acc_balance:
         self.project = project
 
     def compute_balances(self):
-
         raw_balances = {}
         for member in self.project.members:
             raw_balances[member] = 0
@@ -17,6 +16,7 @@ class Acc_balance:
             shares = expense.split_between(self.project.members)
             for member, share in shares.items():                    # distribute the rest of the members' shares
                 raw_balances[member] -= share.cents
+
         balances = {}
         for member, cents in raw_balances.items():
             balances[member] = Money(cents)
