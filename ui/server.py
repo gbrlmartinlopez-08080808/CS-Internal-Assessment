@@ -23,7 +23,7 @@ for project in projects:
     project_seq = max(project_seq, int(project.id[1:]))
 
 
-@app.after_request
+@app.after_request          # whole list saved to projects.json (no save button needed)
 def save_after_each_request(response):
     save_all(projects)
     return response
