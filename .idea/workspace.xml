@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17612b3f-ec2f-4b31-9d2b-8ea0c674abb6" name="Changes" comment="comments">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Algorithms/settlement.py" beforeDir="false" afterPath="$PROJECT_DIR$/Algorithms/settlement.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Primary/acc_balance.py" beforeDir="false" afterPath="$PROJECT_DIR$/Primary/acc_balance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithms/allocation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Algorithms/allocation.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +62,7 @@
     "Python.money.executor": "Run",
     "Python.project.executor": "Run",
     "Python.server.executor": "Run",
+    "Python.tests.executor": "Run",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
@@ -80,7 +79,7 @@
       <recent name="C:\Users\gabri\Downloads\CS Internal Assessment" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.tests">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="CS Internal Assessment" />
       <option name="ENV_FILES" value="" />
@@ -104,8 +103,32 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="tests" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="CS Internal Assessment" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.tests" />
         <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
@@ -349,7 +372,39 @@
       <option name="project" value="LOCAL" />
       <updated>1791449331924</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="comments">
+      <option name="closed" value="true" />
+      <created>1791485842240</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1791485842240</updated>
+    </task>
+    <task id="LOCAL-00030" summary="comments">
+      <option name="closed" value="true" />
+      <created>1791487548343</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1791487548343</updated>
+    </task>
+    <task id="LOCAL-00031" summary="comments">
+      <option name="closed" value="true" />
+      <created>1791487621981</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1791487621981</updated>
+    </task>
+    <task id="LOCAL-00032" summary="comments">
+      <option name="closed" value="true" />
+      <created>1791491384795</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1791491384795</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

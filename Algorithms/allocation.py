@@ -8,16 +8,15 @@ def level_fill(values, cost):
     remaining = cost
 
     while k < n:
-        gap = values[k] - level
-        cost_to_raise = gap * k
-        if cost_to_raise > remaining:
+        gap = values[k] - level     # distance up to the next member's balance
+        cost_to_raise = gap * k     # lifting all k members in the group by that gap
+        if cost_to_raise > remaining:   # the cost left cannot reach the next member
             break
         remaining -= cost_to_raise
-        level = values[k]
-        k += 1
-
-    base = remaining // k
-    extra = remaining % k
+        level = values[k]           # the group is now level with that member...
+        k += 1                      # ...who joins it
+    base = remaining // k           # split what is left equally across the group
+    extra = remaining % k           # leftover cents, one each to the first members
     level += base
 
     pays = []
