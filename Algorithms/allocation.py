@@ -32,34 +32,34 @@ def level_fill(values, cost):
 
 
 def allocate_proportional(cost: Money, balances: dict[Member, Money], min_percent: float = 5.0, num_payers="all"):
-    cost = cost.cents
-    if cost <= 0 or len(balances) == 0:
+    cost = cost.cents                       # work in whole cents
+    if cost <= 0 or len(balances) == 0:     # nothing to share, or nobody to pa
         raise ValueError("Purchase allocation invalid, unregistered cost or payers")
 
-    members = []
+    members = []                            # parallel lists: members[i] owns values[i]
     values = []
     for member, money in balances.items():
         members.append(member)
         values.append(money.cents)
 
-    for i in range(len(values)):
+    for i in range(len(values)):            # selection sort: lowest balance first
         lowest = i
         for j in range(i + 1, len(values)):
             if values[j] < values[lowest]:
                 lowest = j
         values[i], values[lowest] = values[lowest], values[i]
-        members[i], members[lowest] = members[lowest], members[i]
+        members[i], members[lowest] = members[lowest], members[i]   # the member moves with their balance
 
-    if num_payers == "all":
+    if num_payers == "all":     # how many members share the cost
         n = len(members)
     elif num_payers < 1:
         raise ValueError("At least one person has to pay")
     else:
-        n = min(num_payers, len(members))
+        n = min(num_payers, len(members))   # cannot be more than total members
 
-    threshold = cost * min_percent / 100
-    pays = level_fill(values[:n], cost)
-    while n > 1 and pays[n - 1] < threshold:
+    threshold = cost * min_percent / 100    # smallest share worth making
+    pays = level_fill(values[:n], cost)     # level the n lowest balances (chart 6)
+    while n > 1 and pays[n - 1] < threshold:    # last payer's share is too small
         n -= 1
         pays = level_fill(values[:n], cost)
 
