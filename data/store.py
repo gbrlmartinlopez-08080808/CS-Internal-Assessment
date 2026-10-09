@@ -54,15 +54,15 @@ def project_from_dict(data):
     members_by_id = {}
     for item in data["members"]:
         member = Member(item["id"], item["name"])
-        members_by_id[member.id] = member
-        project.members.append(member)
+        members_by_id[member.id] = member       # dictionary for lookup by id
+        project.members.append(member)          # rebuilding members
 
     for item in data["expenses"]:
         proof = None
         if item["proof"] is not None:
             proof = proof_from_dict(item["proof"])
-        payer = members_by_id[item["payer_id"]]
-        project.expenses.append(Expense(item["id"], Money(item["amount"]), payer,
+        payer = members_by_id[item["payer_id"]]    # associating each purchase to payer
+        project.expenses.append(Expense(item["id"], Money(item["amount"]), payer,   # rebuilding expenses
                                         item["date"], item["description"], proof))
 
     return project
