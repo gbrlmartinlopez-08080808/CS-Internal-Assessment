@@ -7,9 +7,9 @@
     <list default="true" id="17612b3f-ec2f-4b31-9d2b-8ea0c674abb6" name="Changes" comment="comments">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OCR/OCR_text_extraction.py" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/OCR_text_extraction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/ui/html/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/ui/html/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/templates/projects.html" beforeDir="false" afterPath="$PROJECT_DIR$/ui/html/projects.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/html/base.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/html/dashboard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/html/projects.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -448,7 +448,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791557783180</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="comments">
+      <option name="closed" value="true" />
+      <created>1791999652165</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1791999652165</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

@@ -7,7 +7,7 @@ from PIL import Image
 from Primary.money import Money
 from Primary.proof import Proof
 
-windows_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+windows_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe\tesseract.exe"
 if os.path.exists(windows_tesseract):
     pytesseract.pytesseract.tesseract_cmd = windows_tesseract
 
