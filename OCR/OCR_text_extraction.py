@@ -7,7 +7,7 @@ from PIL import Image
 from Primary.money import Money
 from Primary.proof import Proof
 
-windows_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe\tesseract.exe"
+windows_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 if os.path.exists(windows_tesseract):
     pytesseract.pytesseract.tesseract_cmd = windows_tesseract
 
@@ -20,16 +20,15 @@ def read_receipt(image_path: str):
     image_hash = file_hash(image_path)
     try:
         image = Image.open(image_path)                              # Pillow opens the file
+        for psm in (3, 4):                                          # try two-page layouts: automatic & single column
+            raw_text = pytesseract.image_to_string(image, config=f"--psm {psm}")
+            total, date = parse_receipt_text(raw_text)
+            if total is not None:                                   # stop at the first layout that gives a total
+                break
     except pytesseract.TesseractNotFoundError:                      # OCR engine not installed
-        raise ValueError("..., please type the amount instead")
+        raise ValueError("Tesseract (OCR parsing software) is not installed, so the receipt cannot be read, please type the amount instead")
     except (OSError, pytesseract.TesseractError):                   # not an image, or cannot be read
-        raise ValueError("..., please type the amount instead")
-
-    for psm in (3, 4):                                              # try two-page layouts: automatic & single column
-        raw_text = pytesseract.image_to_string(image, config=f"--psm {psm}")
-        total, date = parse_receipt_text(raw_text)
-        if total is not None:                                       # stop at the first layout that gives a total
-            break
+        raise ValueError("The receipt could not be opened or read, please type the amount instead")
 
     status = "unreadable"
     if total is not None:
